@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/helmi/Jupyter/Chatbot1/model.tflearn"
+all_model_checkpoint_paths: "/home/helmi/Jupyter/Chatbot1/model.tflearn"
