@@ -41,6 +41,11 @@
          "patterns": ["translate", "i want you to translate me some thing", "wanna a translation","can u translate","je veux une translate"],
          "responses": ["give me the sentence to translate", "what do you want to translate?"],
 	 "context_set": "ibm_translation"
+        },
+
+        {"tag": "ibm-watson",
+                "responses":["here will be your translation"],
+           "context_filter": "ibm_translation"
         }
    ]
 }
