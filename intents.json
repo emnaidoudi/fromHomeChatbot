@@ -3,6 +3,10 @@
          "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"],
          "responses": ["Hello, thanks for visiting", "Good to see you again", "Hi there, how can I help?"]
         },
+        {"tag": "askManager",
+         "patterns": ["who is the manager of ", "manager of ", "tell me who is the manager of", "who manages "],
+         "responses": []
+         },
         {"tag": "goodbye",
          "patterns": ["Bye", "See you later", "Goodbye"],
          "responses": ["See you later, thanks for visiting", "Have a nice day", "Bye! Come back again soon."]
@@ -44,8 +48,14 @@
         },
 
         {"tag": "ibm-watson",
+         "patterns":[],
                 "responses":["here will be your translation"],
            "context_filter": "ibm_translation"
+        },
+        {"tag": "weather",
+                "patterns":["wheather","i wanna konw the weather","how it is outside","outside?","climat","tell me about the weather","what's the weather  in"],
+                "responses":[]
+		
         }
    ]
 }

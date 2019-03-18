@@ -1,0 +1,9 @@
+{"entities": [
+    {"tag": "location",
+     "examples": ["paris", "tunis"]
+    },
+    {"tag": "accretio-groups",
+      "examples": ["connect", "talent","devops","easyrun","core"]
+    }
+]
+}
