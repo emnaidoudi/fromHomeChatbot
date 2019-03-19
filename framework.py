@@ -12,9 +12,16 @@ import random
 import spacy
 from fromDatabase import get_manager
 import datetime
+import requests
 
-
-
+def get_wheather(loc):
+     if(loc ==None):
+       loc="tunis"
+    # print("inin %s" %(loc))
+     r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&APPID=acf0a678438a992a21999196194f42c0'%(loc))
+     j=r.json()
+     x="Temperature : %s°C, %s "  % (j['main']["temp"],j["weather"][0]["description"])
+     return  x
 def spacy_entity(sentence):
     all_extractions = list()
     # Load English tokenizer, tagger, parser, NER and word vectors
@@ -30,12 +37,8 @@ def spacy_entity(sentence):
 
 
 def clean_up_sentence(sentence):
-    #spell = SpellChecker()
-    # tokenize the pattern
     sentence_words = nltk.word_tokenize(sentence)
-    # stem each word
     sentence_words = [stemmer.stem(word.lower()) for word in sentence_words]
-    #print("after cleaning up ",sentence_words)
     return sentence_words
 
 # return bag of words array: 0 or 1 for each word in the bag that exists in the sentence
@@ -94,6 +97,7 @@ def classify(sentence):
 
 
 def entity_exact(sentence):
+    sentence=sentence.lower()
     entities_stemmed=""
     entity=classify(sentence)[0][0] # location
     for i in entities["entities"]:
@@ -137,15 +141,6 @@ model_intent = tflearn.DNN(net, tensorboard_dir='tflearn_logs')
 model_intent.load('./model.tflearn')
 
 
-import requests
-def get_wheather(loc):
-    # print("inin %s" %(loc))
-     r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&APPID=acf0a678438a992a21999196194f42c0'%(loc))
-     j=r.json()
-     x="Temperature : %s°C, %s "  % (j['main']["temp_min"],j["weather"][0]["description"])
-     return  x
-
-
 
 # create a data structure to hold user context
 context = {}
@@ -184,8 +179,8 @@ def response(sentence, userID='123', show_details=False):
             context.clear()
             # Check if it is a TRANSALATION
             if i["context_filter"]=="ibm_translation":
-                return print(ibm_watson_translation(sentence))
-            return print(random.choice(i['responses']))
+                return ibm_watson_translation(sentence)
+            return random.choice(i['responses'])
         
     results = classify_intent(sentence)
     # if we have a classification then find the matching intent tag
@@ -194,11 +189,11 @@ def response(sentence, userID='123', show_details=False):
         while results:
             for i in intents['intents']:
                 # find a tag matching the first result
-                if i["tag"]=="weather":
+                if results[0][0]=="weather":
                     loc=entity_exact(sentence)
                     print(loc)
                     return get_wheather(loc)
-                if i["tag"]=="askManager":
+                if results[0][0]=="askManager":
                     try:
                         now = datetime.datetime.now()
                         year=now.year
